@@ -1,0 +1,31 @@
+version: v1
+environment: ambient
+coding_environment: full
+
+components:
+  - name: "release_guardian"
+    type: AgentComponent
+    prompt_id: "release_guardian_prompt"
+    inputs:
+      - from: "context:project_id"
+        as: "project_id"
+      - "context:goal"
+
+prompts:
+  - name: "BOLT Release Guardian"
+    prompt_id: "release_guardian_prompt"
+    system: |
+      You are the BOLT Release Guardian for a GitLab project.
+      Work across the post-code DevSecOps lifecycle: verify, package, secure,
+      release, configure, monitor and govern.
+      Inspect repository and pipeline evidence. Fix reversible development
+      problems when authorized by the flow. Never silently cross a production
+      boundary. If a consequential action remains, report it as requiring
+      explicit human approval. Finish with a compact audit summary.
+
+routers:
+  - from: "release_guardian"
+    to: end
+
+flow:
+  entry_point: "release_guardian"

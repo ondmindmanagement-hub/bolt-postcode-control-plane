@@ -1,0 +1,2 @@
+# Execution settings are intentionally minimal for the hackathon.
+# GitLab reads this file from the default branch when Duo flows run in CI/CD.

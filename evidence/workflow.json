@@ -1,0 +1,63 @@
+{
+  "generated_at": "2026-10-08T23:12:06.428Z",
+  "autonomy": "supervised",
+  "lifecycle_stages": [
+    "verify",
+    "package",
+    "secure",
+    "release",
+    "configure",
+    "monitor",
+    "govern"
+  ],
+  "workflow": [
+    {
+      "id": 1,
+      "action": "review merge request",
+      "decision": "allow",
+      "reason": "reversible development action"
+    },
+    {
+      "id": 2,
+      "action": "run unit tests",
+      "decision": "allow",
+      "reason": "reversible development action"
+    },
+    {
+      "id": 3,
+      "action": "build package",
+      "decision": "allow",
+      "reason": "reversible development action"
+    },
+    {
+      "id": 4,
+      "action": "scan dependencies",
+      "decision": "allow",
+      "reason": "reversible development action"
+    },
+    {
+      "id": 5,
+      "action": "prepare release notes",
+      "decision": "approval_required",
+      "reason": "consequential external or production action"
+    },
+    {
+      "id": 6,
+      "action": "deploy to production",
+      "decision": "approval_required",
+      "reason": "consequential external or production action"
+    },
+    {
+      "id": 7,
+      "action": "check post-release health",
+      "decision": "approval_required",
+      "reason": "consequential external or production action"
+    },
+    {
+      "id": 8,
+      "action": "write governance summary",
+      "decision": "allow",
+      "reason": "reversible development action"
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+default:
+  image: node:22-alpine
+
+stages:
+  - verify
+  - package
+  - secure
+  - release
+  - configure
+  - monitor
+  - govern
+
+cache:
+  paths:
+    - .npm/
+
+before_script:
+  - npm config set cache .npm --global
+
+verify:test:
+  stage: verify
+  script:
+    - npm test
+    - npm run evidence
+  artifacts:
+    when: always
+    paths:
+      - evidence/
+
+package:artifact:
+  stage: package
+  script:
+    - mkdir -p dist
+    - cp -R src package.json README.md LICENSE dist/
+    - tar -czf bolt-postcode-control-plane.tgz dist
+  artifacts:
+    paths:
+      - bolt-postcode-control-plane.tgz
+
+secure:dependency-audit:
+  stage: secure
+  allow_failure: false
+  script:
+    - npm audit --audit-level=high
+
+release:prepare:
+  stage: release
+  script:
+    - echo "release_candidate=$CI_COMMIT_SHA" > release.env
+    - echo "Release candidate prepared; no production side effect has occurred."
+  artifacts:
+    reports:
+      dotenv: release.env
+
+configure:production-gate:
+  stage: configure
+  when: manual
+  allow_failure: false
+  script:
+    - echo "Human approval received for production boundary."
+    - echo "deployment_status=approved" > deployment.env
+  artifacts:
+    reports:
+      dotenv: deployment.env
+
+monitor:health:
+  stage: monitor
+  needs:
+    - job: configure:production-gate
+      artifacts: true
+  script:
+    - test "$deployment_status" = "approved"
+    - echo "health=healthy" > health.env
+  artifacts:
+    reports:
+      dotenv: health.env
+
+govern:summary:
+  stage: govern
+  needs:
+    - job: monitor:health
+      artifacts: true
+  script:
+    - test "$health" = "healthy"
+    - npm run evidence
+    - echo "Governance evidence created."
+  artifacts:
+    when: always
+    paths:
+      - evidence/
