@@ -54,6 +54,6 @@ MIT.
 
 ## Real-run demonstration
 
-[Watch the 54-second PostCode-specific screen recording](https://gitlab.com/hello1645/bolt-postcode-control-plane/-/raw/main/demo/BOLT_PostCode_7Stage_Real_Demo.mp4) (silent MP4). It shows the five passing local policy tests, generated workflow evidence, and the seven GitLab pipeline stages, including the intentionally **manual** production gate. This is a distinct demonstration from BOLT Release Guardian.
+[Watch the 54-second PostCode-specific screen recording](https://github.com/ondmindmanagement-hub/bolt-postcode-control-plane/blob/main/demo/BOLT_PostCode_7Stage_Real_Demo.mp4) (silent MP4). It shows the five passing local policy tests, generated workflow evidence, and the seven GitLab pipeline stages, including the intentionally **manual** production gate. This is a distinct demonstration from BOLT Release Guardian.
 
 **Judge note:** A GitLab pipeline marked manual/blocked is expected: the production stage is intentionally not authorized. No production deployment is represented as completed.
