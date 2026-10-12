@@ -9,7 +9,10 @@ const HIGH_RISK = [
 ];
 
 export function classifyAction(action) {
-  const text = String(action || "").trim();
+  if (typeof action !== "string") {
+    return { decision: "deny", reason: "action label must be a string" };
+  }
+  const text = action.trim();
   if (!text) return { decision: "deny", reason: "empty action" };
 
   if (HIGH_RISK.some((rule) => rule.test(text))) {
@@ -19,9 +22,14 @@ export function classifyAction(action) {
     };
   }
 
+  const safeLabels = new Set(["run unit tests", "test", "scan dependencies", "inspect logs", "git status", "git diff"]);
+  if (safeLabels.has(text.toLowerCase())) {
+    return { decision: "allow", reason: "explicitly allowlisted review action" };
+  }
+
   return {
-    decision: "allow",
-    reason: "reversible development action"
+    decision: "approval_required",
+    reason: "not explicitly allowlisted; human review required"
   };
 }
 
